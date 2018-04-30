@@ -1,0 +1,139 @@
+<html>
+	<head>
+		<style>
+			.Square {
+				width: 80px;
+				height: 80px;
+				text-align: center;
+				font-size: 30pt;
+				font-weight: bold;				
+				font-family: Verdana;
+			}
+			input[type="button"]{
+
+				padding:0px 10px;
+				border-radius:4px;
+				color: white;
+				background-color:orange;
+				font:15px arial, sans-serif, bold;
+				font-weight: 900;
+				width:220px;
+				height:30px;
+				}
+		</style>
+		
+		<script>
+		
+		function startGame() {
+			//In this function we prepare to start the game by clearing all turns in the table.
+			for (var i = 1; i <= 9; i = i + 1) {
+				clearBox(i); //calling function and passing i-th value to the number argument to clear all the boxes.
+			}
+			//randomly generate the turns of each whoever want to start first.
+			document.turn = "X";
+			if (Math.random() < 0.5) {
+				document.turn = "O";
+			}
+			document.winner = null; //initially set the document.winner to null.
+			setMessage(document.turn + " gets to start."); //set message as document.turn gets to start.
+		} //end function startGame.
+		
+		function setMessage(msg) {
+			//Set message in the div message element by holding the messages.
+			document.getElementById("message").innerText = msg;
+		} //end function setMessage.
+		
+		function nextMove(square) {
+			//in this function we check the winner and the empty div and place a move to the further game.
+			//checks whether document.winner is not null
+			if (document.winner != null) {
+				setMessage(document.winner + " already won the game."); //if not null then winner wons the game.
+			} else if (square.innerText == "") { //checks whether the square is empty or not.
+				square.innerText = document.turn; //if empty then user make a move.
+				switchTurn(); //switch turns to x and o each time alternatively.
+			} else {
+				setMessage("That square is already used.");
+			}
+		} //end function nextMove.
+		
+		function switchTurn() {
+			//In this function if turn leads to winner then setting turn value to winner or generating alternative to x and o to play the game.
+			if (checkForWinner(document.turn)) { //checking the next turn will be the winner.
+				setMessage("Congratulations, " + document.turn + "!  You win!"); 
+				document.winner = document.turn; //if winner then assign document.turn to document.winner.
+			} else if (document.turn == "X") {
+				document.turn = "O"; //switching to 'o' if x's turn completes for the next move.
+				setMessage("It's " + document.turn + "'s turn!");
+			} else {
+				document.turn = "X"; //switching to 'x' if o's turn completes for the next move.
+				setMessage("It's " + document.turn + "'s turn!");
+			}
+		} //end function switchTurn.
+		
+		function checkForWinner(move) {
+			//In this function we check for probability of winners and return result.
+			var result = false;
+			if (checkRow(1, 2, 3, move) || 
+				checkRow(4, 5, 6, move) ||
+				checkRow(7, 8, 9, move) || 
+				checkRow(1, 4, 7, move) ||
+				checkRow(2, 5, 8, move) ||
+				checkRow(3, 6, 9, move) ||
+				checkRow(1, 5, 9, move) ||
+				checkRow(3, 5, 7, move)) {
+				
+				result = true;
+			} //end if
+			return result;
+		} //end function checkForWinner.
+		
+		function checkRow(a, b, c, move) {
+			//check if the three moves have been placed successfully.
+			var result = false;
+			if (getBox(a) == move && getBox(b) == move && getBox(c) == move) {
+				result = true;
+			}
+			return result;
+		} //end function checkRow
+		
+		function getBox(number) {
+			//returns the inner text of each square.
+			return document.getElementById("s" + number).innerText;
+		} //end function getBox.
+		
+		function clearBox(number) {
+			//clear all the squares.
+			document.getElementById("s" + number).innerText = "";
+		}//end function clearBox.
+		
+		</script>
+		
+	</head>
+	<center>
+	<body onload="startGame();">
+		<h1>Welcome to my Tic-Tac-Toe game!</h1>
+		
+		<div id="message">messages will go here</div>
+		
+		<table border="1">
+			<tr>
+				<td id="s1" class="Square" onclick="nextMove(this);"></td>
+				<td id="s2" class="Square" onclick="nextMove(this);"></td>
+				<td id="s3" class="Square" onclick="nextMove(this);"></td>
+			</tr>
+			<tr>
+				<td id="s4" class="Square" onclick="nextMove(this);"></td>
+				<td id="s5" class="Square" onclick="nextMove(this);"></td>
+				<td id="s6" class="Square" onclick="nextMove(this);"></td>
+			</tr>
+			<tr>
+				<td id="s7" class="Square" onclick="nextMove(this);"></td>
+				<td id="s8" class="Square" onclick="nextMove(this);"></td>
+				<td id="s9" class="Square" onclick="nextMove(this);"></td>
+			</tr>
+		</table>
+		<br>
+		<input  type = "button" id = "start" onclick = "startGame()" value = "Start Again!" />
+	</body>
+	</center>
+</html>

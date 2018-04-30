@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<style type = "text/css">
+			.imgStyle
+			{
+				height: 100px;
+				width: 100px;
+				border: 3px solid black;
+			}
+		</style>
+	</head>
+	<center>
+	<body>
+		<img height = "346px" width = "605px" style = "border: 3px solid grey" src="Images/library.jpg" id = "mainImage" />
+		<br />
+		<div id = "myDiv" onclick = "changeImage(event)">
+			<img class = "imgStyle" src = "Images/library.jpg" />
+			<img class = "imgStyle" src = "Images/library2.jpg" />
+			<img class = "imgStyle" src = "Images/library3.jpg" />
+			<img class = "imgStyle" src = "Images/library4.jpg" />
+		</div>
+		<script type = "text/javascript">
+			var images = document.getElementById("myDiv").getElementsByTagName("img");
+				//iterate through all the img elements.
+				for(var i = 0; i < images.length; i++) {
+					images[i].onmouseover = function() { //mouse over function
+						this.style.cursor = "hand";
+						this.style.borderColor = "red";
+					}
+					
+					images[i].onmouseout = function() {
+						this.style.cursor = "pointer";
+						this.style.borderColor = "black";
+					}
+				} //end function onmouseover.
+			function changeImage(event) {
+				event = event || window.event; //for earlier IE8.
+				var targetElement = event.target || event.srcElement; //targetting to where click event occurs.
+				if(targetElement.tagName == "IMG") { //on click on img tag.
+					//take target element src to set to the main element src.
+					document.getElementById("mainImage").src = targetElement.getAttribute("src");
+				}
+			} //end function changeImage.
+		</script>
+	</body>
+	</center>
+</html>
